@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WpfCustomControlsLearn"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="450"
-        Width="800"
+        Height="650"
+        Width="1000"
         Loaded="Window_Loaded">
 
     <Window.Resources>
