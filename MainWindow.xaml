@@ -1,0 +1,308 @@
+﻿<Window x:Class="WpfCustomControlsLearn.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfCustomControlsLearn"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="450"
+        Width="800"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Style x:Key="MyTextBoxNormalStyle"
+               TargetType="TextBox">
+            <Setter Property="SelectionBrush"
+                    Value="HotPink" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="PART_Border"
+                                CornerRadius="3"
+                                BorderThickness="1"
+                                BorderBrush="{TemplateBinding SelectionBrush}">
+                            <Grid Margin="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <ScrollViewer x:Name="PART_ContentHost" Foreground="{TemplateBinding Foreground}"/>
+                                <Rectangle x:Name="PART_Rectangle"
+                                           Margin="0"
+                                           Grid.Row="1"
+                                           Height="2"
+                                           VerticalAlignment="Bottom"
+                                           Fill="{TemplateBinding SelectionBrush}" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsFocused"
+                                               Value="false" />
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter TargetName="PART_Rectangle"
+                                            Property="Fill"
+                                            Value="Gray" />
+                                    <Setter TargetName="PART_Border"
+                                            Property="BorderThickness"
+                                            Value="0" />
+                                </MultiTrigger.Setters>
+
+
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsFocused"
+                                               Value="True" />
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter TargetName="PART_Rectangle"
+                                            Property="Fill"
+                                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=SelectionBrush}" />
+                                    <Setter TargetName="PART_Border"
+                                            Property="BorderThickness"
+                                            Value="1" />
+                                </MultiTrigger.Setters>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="PART_Rectangle"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                Duration="0:0:0.2"
+                                                                From="0,0,0,0"
+                                                                To="5,0,5,0">
+                                                <ThicknessAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseOut" />
+                                                </ThicknessAnimation.EasingFunction>
+                                            </ThicknessAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="PART_Rectangle"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                Duration="0:0:0.2"
+                                                                From="5,0,5,0"
+                                                                To="0,0,0,0">
+                                                <ThicknessAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseOut" />
+                                                </ThicknessAnimation.EasingFunction>
+                                            </ThicknessAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MyButtonNormalStyle"
+               TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="PART_Border"
+                                Margin="0"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsPressed"
+                                               Value="false" />
+                                    <Condition Property="IsMouseOver"
+                                               Value="true" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Border"
+                                        Property="BorderBrush"
+                                        Value="Black" />
+                                <Setter TargetName="PART_Border"
+                                        Property="BorderThickness"
+                                        Value="2" />
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.1"
+                                                                Storyboard.TargetName="PART_Border"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                From="0"
+                                                                To="1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.2"
+                                                                Storyboard.TargetName="PART_Border"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                From="1"
+                                                                To="0" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsPressed"
+                                               Value="true" />
+                                    <Condition Property="IsMouseOver"
+                                               Value="true" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Border"
+                                        Property="BorderBrush"
+                                        Value="Black" />
+                                <Setter TargetName="PART_Border"
+                                        Property="BorderThickness"
+                                        Value="3" />
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.2"
+                                                                Storyboard.TargetName="PART_Border"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                From="0"
+                                                                To="5"
+                                                                AutoReverse="True">
+                                                <ThicknessAnimation.EasingFunction>
+                                                    <PowerEase EasingMode="EaseOut" />
+                                                </ThicknessAnimation.EasingFunction>
+                                            </ThicknessAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.15*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <TextBlock Height="auto"
+                       FontSize="10px"
+                       Margin="8"
+                       Text="1:"
+                       HorizontalAlignment="Right"/>
+            <TextBlock Height="auto"
+                       FontSize="20px"
+                       Margin="8"
+                       Text="2:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Height="auto"
+                       FontSize="30px"
+                       Margin="8"
+                       Text="3:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Height="auto"
+                       FontSize="40px"
+                       Margin="8"
+                       Text="4:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Height="auto"
+                       FontSize="50px"
+                       Margin="8"
+                       Text="5:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Height="auto"
+                       FontSize="60px"
+                       Margin="8"
+                       Text="6:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Height="auto"
+                       FontSize="70px"
+                       Margin="8"
+                       Text="7:"
+                       HorizontalAlignment="Right" />
+            <Button Name="RandomButton"
+                Content="Random"
+                    FontSize="20"
+                    Height="auto"
+                    Margin="5"
+                    BorderBrush="BlueViolet"
+                    Background="AliceBlue"
+                    BorderThickness="2"
+                    Style="{StaticResource MyButtonNormalStyle}"
+                    Click="RandomButton_Click" />
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <TextBox Margin="5"
+                     Height="auto"
+                     FontSize="10px"
+                     Style="{StaticResource MyTextBoxNormalStyle}" />
+            <TextBox Margin="5"
+                     Height="auto"
+                     FontSize="20px"
+                     Style="{StaticResource MyTextBoxNormalStyle}" />
+            <TextBox Margin="5"
+                     Height="auto"
+                     FontSize="30px"
+                     Style="{StaticResource MyTextBoxNormalStyle}" />
+            <TextBox Margin="5"
+                     Style="{StaticResource MyTextBoxNormalStyle}"
+                     Height="auto"
+                     FontSize="40px" />
+            <TextBox Margin="5"
+                     Style="{StaticResource MyTextBoxNormalStyle}"
+                     Height="auto"
+                     FontSize="50px">
+                <TextBox.SelectionBrush>
+                    <LinearGradientBrush EndPoint="0.5,1"
+                                         StartPoint="0.5,0">
+                        <GradientStop Color="Black" />
+                        <GradientStop Color="#FFDA2E2E"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </TextBox.SelectionBrush>
+                <TextBox.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1"
+                                         StartPoint="0.5,0">
+                        <GradientStop Color="Black" />
+                        <GradientStop Color="#FFDA2E2E"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox Margin="5"
+                     Style="{StaticResource MyTextBoxNormalStyle}"
+                     Height="auto"
+                     FontSize="60px" />
+            <TextBox Margin="5"
+                     Style="{StaticResource MyTextBoxNormalStyle}"
+                     Height="auto"
+                     FontSize="70px" />
+            <Button Content="Change Random Text"
+                    FontSize="20"
+                    Height="auto"
+                    Margin="5"
+                    BorderBrush="BlueViolet"
+                    Background="AliceBlue"
+                    BorderThickness="2"
+                    Style="{StaticResource MyButtonNormalStyle}"
+                    Click="Button_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
